@@ -1,3 +1,4 @@
+from copy import copy
 class NodeFolder:
     def __init__(self, name):
         self.name= name
@@ -299,11 +300,14 @@ class Tree:
         path.pop(len(path)-1)
         return
 
-    def move(self,nodeAwal,nodePindah):
-        pathAwal = self.getPath(nodeAwal)
-        pathPindah = self.getPath(nodePindah)
-        copy = nodeAwal
-        
+    def move(self,nodeParent: NodeFolder,nodePindah: NodeFolder or NodeFile or NodeZip, nodeParentTujuan: NodeFolder):
+        temp= nodePindah
+        nodeParent.child.deleteByName(nodePindah.name)
+        nodeParentTujuan.child.addWithSort(temp)
+    
+    def copypaste(self, nodeCopy: NodeFolder or NodeFile or NodeZip, nodeParentDest: NodeFolder):
+        newNode= copy(nodeCopy)
+        nodeParentDest.child.addWithSort(newNode)
 
         
 # if __name__ == '__main__':
