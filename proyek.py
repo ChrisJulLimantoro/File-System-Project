@@ -308,8 +308,8 @@ class Tree:
     def copypaste(self, nodeCopy: NodeFolder or NodeFile or NodeZip, nodeParentDest: NodeFolder):
         newNode= copy(nodeCopy)
         nodeParentDest.child.addWithSort(newNode)
-        
-    def deleteFolderOnly(self, nodeParentOfFolder: NodeFolder, nodeDeleted: NodeFolder)
+
+    def deleteFolderOnly(self, nodeParentOfFolder: NodeFolder, nodeDeleted: NodeFolder):
         llDelete= nodeDeleted.child
         nodeParentOfFolder.child.deleteByName(nodeDeleted.name)
         iter= llDelete.head
