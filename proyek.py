@@ -6,32 +6,64 @@ class NodeFolder:
         self.prev= None
     def rename(self, newName):
         self.name= newName
+    def getDetail(self):
+        print("Folder Name:", self.name)
 
 class NodeFile:
     def __init__(self,name):
         self.name= name
         indexType= searchTypeOfFile(self.name)
-        self.type=self.name[indexType+1:]
+        self.type=self.name[indexType:]
         self.next= None
         self.prev= None
     def rename(self, newName):
         self.name=newName
         indexType= searchTypeOfFile(self.name)
-        self.type= self.name[indexType+1:]
+        self.type= self.name[indexType:]
+    def getDetail(self):
+        print("File Name:", self.name)
+        print("File Type:", self.type)
+
 
 def searchTypeOfFile(fileName):
     indexType=0
-    for i in fileName:
+    for i in fileName[::-1]:
         if i == ".":
             break
         indexType += 1
-    return indexType
+    return len(fileName)-indexType
 
 class DoubleLinkedList:
     def __init__(self):
         self.head= None
         self.tail= None
         self.size=0
+
+    def renameThenSort(self, node: NodeFolder or NodeFile, newName):
+        iter= self.head
+        for i in range(self.size):
+            if iter.name== node.name:
+                break
+            iter= iter.next
+        if iter== self.head:
+            self.head= iter.next
+            self.head.prev= None
+            iter.next= None
+            iter.prev= None
+        elif iter== self.tail:
+            self.tail= iter.prev
+            self.tail.next= None
+            iter.next= None
+            iter.prev= None
+        else:
+            iter.prev.next= iter.next
+            iter.next.prev= iter.prev
+            iter.next= None
+            iter.prev= None
+
+        iter.rename(newName)
+        self.size-=1
+        self.addWithSort(iter)
 
     def addWithSort(self, node: NodeFolder or NodeFile):
         iter= self.head
@@ -180,6 +212,8 @@ class DoubleLinkedList:
             iter=iter.next
 
 
+
+
 class Tree:
     def __init__(self,root = NodeFolder("PC")):
         self.root = root
@@ -213,6 +247,11 @@ class Tree:
 
     def getPath(self,node:NodeFolder or NodeFile):
         return self.getPathUtil(self.root,node,[])
+    
+    def getDetail(self, node: NodeFolder or NodeFile):
+        node.getDetail()
+        print("Path: ", end="")
+        self.printPath(node)
 
     def printPath(self,node:NodeFolder or NodeFile):
         for i in self.getPath(node):
@@ -251,39 +290,42 @@ class Tree:
 
         
 # if __name__ == '__main__':
-#     ll= DoubleLinkedList()
-#     node1= NodeFile("file1.docs")
-#     ll.addWithSort(node1)
-#     ll.addWithSort(NodeFolder("blabla"))
-#     ll.addWithSort(NodeFile("cicak.pdf"))
-#     ll.addWithSort(NodeFile("cicak.txt"))
-#     ll.addWithSort(NodeFile("blabla.xlsx"))
-#     ll.addWithSort(NodeFolder("babi"))
-#     ll.addWithSort(NodeFolder("Barbar"))
-#     ll.addWithSort(NodeFile("gas.pdf"))
-#     ll.addWithSort(NodeFile("babi.txt"))
-#     ll.addWithSort(NodeFile("zebra.txt"))
+    # ll= DoubleLinkedList()
+    # node1= NodeFile("file1.docs")
+    # ll.addWithSort(node1)
+    # ll.addWithSort(NodeFolder("blabla"))
+    # ll.addWithSort(NodeFile("cicak.pdf"))
+    # ll.addWithSort(NodeFile("cicak.txt"))
+    # ll.addWithSort(NodeFile("blabla.xlsx"))
+    # ll.addWithSort(NodeFolder("babi"))
+    # ll.addWithSort(NodeFolder("Barbar"))
+    # ll.addWithSort(NodeFile("gas.pdf"))
+    # ll.addWithSort(NodeFile("babi.txt"))
+    # ll.addWithSort(NodeFile("zebra.txt"))
 
-#     # ll.deleteByName("file1.docs")
+    # # ll.deleteByName("file1.docs")
 
-#     ll.printAsc()
-#     print()
-#     # ll.printDesc()
-#     # print()
-#     # ll.sortByType()
-#     # print()
-#     ll.viewByType("xlsx")
+    # ll.printAsc()
+    # print()
+    # # ll.printDesc()
+    # # print()
+    # # ll.sortByType()
+    # # print()
+    # ll.viewByType("xlsx")
 
-#     print()
+    # print()
 
-#     ll.groupBy()
+    # ll.groupBy()
 
 # s = [5,4,3]
 # print(s.pop(len(s)-1))
 t = Tree()
+file1= NodeFile("testing.pdf")
+t.root.child.addWithSort(file1)
 t.root.child.addWithSort(NodeFolder("Ayam Bakar"))
 t.root.child.addWithSort(NodeFolder("Ayam rujak"))
 t.root.child.addWithSort(NodeFolder("Ayam geprek"))
 t.root.child.head.child.addWithSort(NodeFolder("Ayam Bakar"))
 t.root.child.head.next.child.addWithSort(NodeFolder("Ayam Bakar"))
-t.findAll(t.root.child.head,"Ayam")
+# t.findAll(t.root.child.head,"Ayam")
+t.getDetail(file1)
