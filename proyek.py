@@ -9,6 +9,23 @@ class NodeFolder:
     def getDetail(self):
         print("Folder Name:", self.name)
 
+class NodeZip:
+    def __init__(self, name, listOfChild):
+        self.name= name
+        self.type= "zip"
+        self.child= DoubleLinkedList()
+        self.next= None
+        self.prev= None
+        # listOfChild isinya node
+        for i in listOfChild:
+            self.child.addWithSort(i)
+    def rename(self, newName):
+        self.name= newName
+    def getDetail(self):
+        print("Name:", self.name)
+        print("Type:", self.type)
+    
+
 class NodeFile:
     def __init__(self,name):
         self.name= name
@@ -39,7 +56,7 @@ class DoubleLinkedList:
         self.tail= None
         self.size=0
 
-    def renameThenSort(self, node: NodeFolder or NodeFile, newName):
+    def renameThenSort(self, node: NodeFolder or NodeFile or NodeZip, newName):
         iter= self.head
         for i in range(self.size):
             if iter.name== node.name:
@@ -65,7 +82,7 @@ class DoubleLinkedList:
         self.size-=1
         self.addWithSort(iter)
 
-    def addWithSort(self, node: NodeFolder or NodeFile):
+    def addWithSort(self, node: NodeFolder or NodeFile or NodeZip):
         iter= self.head
         canAdd= True
         for i in range(self.size):
@@ -199,13 +216,13 @@ class DoubleLinkedList:
         visitedType=[]
         iter= self.head
         for i in range(self.size):
-            if type(iter) is NodeFile:
+            if type(iter) is NodeFile or type(iter) is NodeZip:
                 if iter.type not in visitedType:
                     visitedType.append(iter.type)
                     print("========", iter.type.upper() , "========")
                     iter2= self.head
                     for j in range(self.size):
-                        if type(iter2) is NodeFile:
+                        if type(iter2) is NodeFile or type(iter2) is NodeZip:
                             if iter2.type == iter.type:
                                 print(iter2.name)
                         iter2= iter2.next
@@ -245,15 +262,15 @@ class Tree:
                 self.findAllUtil(name,akses,path)
         path.pop(len(path)-1)
 
-    def getPath(self,node:NodeFolder or NodeFile):
+    def getPath(self,node:NodeFolder or NodeFile or NodeZip):
         return self.getPathUtil(self.root,node,[])
     
-    def getDetail(self, node: NodeFolder or NodeFile):
+    def getDetail(self, node: NodeFolder or NodeFile or NodeZip):
         node.getDetail()
         print("Path: ", end="")
         self.printPath(node)
 
-    def printPath(self,node:NodeFolder or NodeFile):
+    def printPath(self,node:NodeFolder or NodeFile or NodeZip):
         for i in self.getPath(node):
             print(i,end="\\")
 
@@ -290,42 +307,43 @@ class Tree:
 
         
 # if __name__ == '__main__':
-    # ll= DoubleLinkedList()
-    # node1= NodeFile("file1.docs")
-    # ll.addWithSort(node1)
-    # ll.addWithSort(NodeFolder("blabla"))
-    # ll.addWithSort(NodeFile("cicak.pdf"))
-    # ll.addWithSort(NodeFile("cicak.txt"))
-    # ll.addWithSort(NodeFile("blabla.xlsx"))
-    # ll.addWithSort(NodeFolder("babi"))
-    # ll.addWithSort(NodeFolder("Barbar"))
-    # ll.addWithSort(NodeFile("gas.pdf"))
-    # ll.addWithSort(NodeFile("babi.txt"))
-    # ll.addWithSort(NodeFile("zebra.txt"))
+    ll= DoubleLinkedList()
+    node1= NodeFile("file1.docs")
+    ll.addWithSort(node1)
+    ll.addWithSort(NodeFolder("blabla"))
+    ll.addWithSort(NodeFile("cicak.pdf"))
+    ll.addWithSort(NodeFile("cicak.txt"))
+    ll.addWithSort(NodeFile("blabla.xlsx"))
+    ll.addWithSort(NodeFolder("babi"))
+    ll.addWithSort(NodeFolder("Barbar"))
+    ll.addWithSort(NodeFile("gas.pdf"))
+    ll.addWithSort(NodeFile("babi.txt"))
+    ll.addWithSort(NodeFile("zebra.txt"))
+    ll.addWithSort(NodeZip("ok.zip",listOfChild=[NodeFile("blabla.pdf"), NodeFile("yyy.docs")]))
 
-    # # ll.deleteByName("file1.docs")
+    # ll.deleteByName("file1.docs")
 
-    # ll.printAsc()
+    ll.printAsc()
+    print()
+    # ll.printDesc()
     # print()
-    # # ll.printDesc()
-    # # print()
-    # # ll.sortByType()
-    # # print()
-    # ll.viewByType("xlsx")
-
+    # ll.sortByType()
     # print()
+    ll.viewByType("xlsx")
 
-    # ll.groupBy()
+    print()
+
+    ll.groupBy()
 
 # s = [5,4,3]
 # print(s.pop(len(s)-1))
-t = Tree()
-file1= NodeFile("testing.pdf")
-t.root.child.addWithSort(file1)
-t.root.child.addWithSort(NodeFolder("Ayam Bakar"))
-t.root.child.addWithSort(NodeFolder("Ayam rujak"))
-t.root.child.addWithSort(NodeFolder("Ayam geprek"))
-t.root.child.head.child.addWithSort(NodeFolder("Ayam Bakar"))
-t.root.child.head.next.child.addWithSort(NodeFolder("Ayam Bakar"))
-# t.findAll(t.root.child.head,"Ayam")
-t.getDetail(file1)
+# t = Tree()
+# file1= NodeFile("testing.pdf")
+# t.root.child.addWithSort(file1)
+# t.root.child.addWithSort(NodeFolder("Ayam Bakar"))
+# t.root.child.addWithSort(NodeFolder("Ayam rujak"))
+# t.root.child.addWithSort(NodeFolder("Ayam geprek"))
+# t.root.child.head.child.addWithSort(NodeFolder("Ayam Bakar"))
+# t.root.child.head.next.child.addWithSort(NodeFolder("Ayam Bakar"))
+# # t.findAll(t.root.child.head,"Ayam")
+# t.getDetail(file1)
