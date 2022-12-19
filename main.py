@@ -17,6 +17,23 @@ def print_structure(node:NodeFolder or NodeDrive,lvl = 1):
 def print_path(path):
     for i in range(len(path)):
         print(path[i].name, end=" > ")
+    print()
+
+def print_children(node:NodeFolder or NodeDrive,tipe = 0):
+    temp = node.child.head
+    if temp == None:
+        print('Folder masih kosong!')
+    else:
+        while temp != None:
+            if tipe == 0:
+                print(" - "+temp.name)
+            if tipe == 1:
+                if type(temp) == NodeFolder or NodeDrive or NodeZip:
+                    print(" - "+temp.name)
+            if tipe == 2:
+                if type(temp) == NodeFile:
+                    print(" - "+temp.name)
+            temp = temp.next
 
 if __name__ == '__main__':
     currentPath = []
@@ -48,62 +65,64 @@ if __name__ == '__main__':
         print("19. Unzip")
         print("20. Print Structure Current")
         print_path(currentPath)
-        user = int(input("Pilihan anda: "))
-        if user == 1:
+        user = input("Pilihan anda: ")
+        if user == "1":
             folderName = input("New Folder Name: ")
             newFolder = NodeFolder(folderName)
             currentPath[-1].child.addWithSort(newFolder)
-        elif user == 2:
+        elif user == "2":
             fileName = input("New File Name and with file type (Example: File1.txt): ")
             newFile = NodeFile(fileName)
             currentPath[-1].child.addWithSort(newFile)
-        elif user == 3:
+        elif user == "3":
+            print("list of available directory : ")
+            print_children(tree.getNodeByPath(currentPath))
             nameDir= input("Change dir to? (Folder Name) : ")
             node= currentPath[-1].child.getNode(nameDir)
             currentPath.append(node)
-        elif user == 4:
+        elif user == "4":
             currentPath[-1].child.printAsc()
-        elif user == 5:
+        elif user == "5":
             currentPath[-1].child.printDesc()
-        elif user == 6:
+        elif user == "6":
             currentPath.pop(-1)
-        elif user==7:
+        elif user == "7":
             willRename= input("Input Nama Folder/ File yang akan direname: ")
             nodeRename=currentPath[-1].child.getNode(willRename)
             newName= input("New Name: ")
             currentPath[-1].child.renameThenSort(nodeRename, newName)
-        elif user==8:
+        elif user == "8":
             willDelete= input("Input File yang akan didelete: ")
             currentPath[-1].child.deleteByName(willDelete)
-        elif user==9:
+        elif user == "9":
             foldername= input("Input nama Folder yang akan dihapus: ")
             node= currentPath[-1].child.getNode(foldername)
             nodeParent= currentPath[-1]
             tree.deleteFolderAll(nodeParent,node)
-        elif user==10:
+        elif user == "10":
             foldername = input("Input nama Folder yang akan dihapus: ")
             node = currentPath[-1].child.getNode(foldername)
             nodeParent = currentPath[-1]
             tree.deleteFolderOnly(nodeParent, node)
         
         #masih bermasalah
-        elif user==11:
+        elif user == "11":
             name= input("Input nama Folder/ File yang akan ditampilkan pathnya: ")
             node= currentPath[-1].child.getNode(name)
             tree.printPath(node)
 
-        elif user==12:
+        elif user == "12":
             currentPath[-1].child.sortByType()
-        elif user==13:
+        elif user == "13":
             types= input("Input Type: ")
             currentPath[-1].child.viewByType(types)
-        elif user==14:
+        elif user == "14":
             currentPath[-1].child.groupBy()
-        elif user==15:
+        elif user == "15":
             name= input("Input name of folder/file: ")
             node= currentPath[-1].child.getNode(name)
             tree.getDetail(node)
-        elif user==16:
+        elif user == "16":
             name= input("Input name of folder/file: ")
             node= copy(currentPath[-1].child.getNode(name))
             while True:
@@ -133,7 +152,7 @@ if __name__ == '__main__':
                     currentPath.pop(-1)
                 elif user==0:
                     break
-        elif user==17:
+        elif user == "17":
             name= input("Input nama folder/file yang akan dipindah: ")
             node= currentPath[-1].child.getNode(name)
             nodeParent= currentPath[-1]
@@ -190,7 +209,7 @@ if __name__ == '__main__':
                 elif user==0:
                     break
 
-        elif user==19:
+        elif user == "19":
             currentPath[-1].child.viewOnlyZip()
             name= input("Input nama file zip (Example: file.zip): ")
             node= currentPath[-1].child.getNode(name)
@@ -221,9 +240,14 @@ if __name__ == '__main__':
                     currentPath.pop(-1)
                 elif user==0:
                     break
-        elif user == 20:
-            print("Structure dari "+print_path(currentPath)+ " : ")
-            print_structure(Tree.getNodeByPath())
+        elif user == "20":
+            print("Structure dari ",end="")
+            print_path(currentPath)
+            print()
+            print_structure(tree.getNodeByPath(currentPath))
+        else :
+            print('input invalid,input lagi!!')
+
 
         
         
