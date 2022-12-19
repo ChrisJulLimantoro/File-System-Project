@@ -14,6 +14,10 @@ def print_structure(node:NodeFolder or NodeDrive,lvl = 1):
                 print_structure(temp,lvl+1)
             temp = temp.next
 
+def print_path(path):
+    for i in range(len(path)):
+        print(path[i].name, end=" > ")
+
 if __name__ == '__main__':
     currentPath = []
     NodeC = NodeFolder("C:")
@@ -42,8 +46,8 @@ if __name__ == '__main__':
         print("17. Move Folder/File")
         print("18. Zip")
         print("19. Unzip")
-        for i in range(len(currentPath)):
-            print(currentPath[i].name, end=" > ")
+        print("20. Print Structure Current")
+        print_path(currentPath)
         user = int(input("Pilihan anda: "))
         if user == 1:
             folderName = input("New Folder Name: ")
@@ -218,7 +222,11 @@ if __name__ == '__main__':
                 elif user==0:
                     break
         elif user == 20:
+            print("Structure dari "+print_path(currentPath)+ " : ")
             print_structure(Tree.getNodeByPath())
+
+        
+        
 
 
 
