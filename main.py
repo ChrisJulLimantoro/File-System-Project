@@ -124,7 +124,7 @@ if __name__ == '__main__':
             tree.getDetail(node)
         elif user == "16":
             name= input("Input name of folder/file: ")
-            node= copy(currentPath[-1].child.getNode(name))
+            nodes= copy(currentPath[-1].child.getNode(name))
             while True:
                 for i in range(len(currentPath)):
                     print(currentPath[i].name, end=" > ")
@@ -138,7 +138,7 @@ if __name__ == '__main__':
                 print("0. Cancel")
                 user= int(input("Input menu: "))
                 if user==1:
-                    tree.copypaste(node, currentPath[-1])
+                    tree.copypaste(nodes, currentPath[-1])
                     break
                 elif user==2:
                     nameDir = input("Change dir to? (Folder Name) : ")
@@ -154,7 +154,7 @@ if __name__ == '__main__':
                     break
         elif user == "17":
             name= input("Input nama folder/file yang akan dipindah: ")
-            node= currentPath[-1].child.getNode(name)
+            nodes= currentPath[-1].child.getNode(name)
             nodeParent= currentPath[-1]
             while True:
                 for i in range(len(currentPath)):
@@ -169,7 +169,7 @@ if __name__ == '__main__':
                 print("0. Cancel")
                 user= int(input("Input menu: "))
                 if user==1:
-                    tree.move(nodeParent,node,currentPath[-1])
+                    tree.move(nodeParent,nodes,currentPath[-1])
                     break
                 elif user==2:
                     nameDir = input("Change dir to? (Folder Name) : ")
@@ -247,16 +247,3 @@ if __name__ == '__main__':
             print_structure(tree.getNodeByPath(currentPath))
         else :
             print('input invalid,input lagi!!')
-
-
-        
-        
-
-
-
-
-
-
-
-
-

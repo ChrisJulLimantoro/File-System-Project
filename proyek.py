@@ -79,30 +79,43 @@ class DoubleLinkedList:
         print("Tidak ditemukan")
         return 0
     def renameThenSort(self, node: NodeFolder or NodeFile or NodeZip, newName):
+        adaYangSama= False
         iter= self.head
         for i in range(self.size):
-            if iter.name== node.name:
+            if iter.name.lower()== newName.lower():
+                adaYangSama= True
                 break
             iter= iter.next
-        if iter== self.head:
-            self.head= iter.next
-            self.head.prev= None
-            iter.next= None
-            iter.prev= None
-        elif iter== self.tail:
-            self.tail= iter.prev
-            self.tail.next= None
-            iter.next= None
-            iter.prev= None
+        if adaYangSama:
+            print("Nama yang anda inputkan tidak valid, ada yang sama!")
         else:
-            iter.prev.next= iter.next
-            iter.next.prev= iter.prev
-            iter.next= None
-            iter.prev= None
+            iter= self.head
+            for i in range(self.size):
+                if iter.name.lower()== node.name.lower():
+                    break
+                iter= iter.next
+            if self.size==1:
+                self.head= None
+                self.prev= None
+            elif iter== self.head:
+                self.head= iter.next
+                self.head.prev= None
+                iter.next= None
+                iter.prev= None
+            elif iter== self.tail:
+                self.tail= iter.prev
+                self.tail.next= None
+                iter.next= None
+                iter.prev= None
+            else:
+                iter.prev.next= iter.next
+                iter.next.prev= iter.prev
+                iter.next= None
+                iter.prev= None
 
-        iter.rename(newName)
-        self.size-=1
-        self.addWithSort(iter)
+            iter.rename(newName)
+            self.size-=1
+            self.addWithSort(iter)
 
     def addWithSort(self, node: NodeFolder or NodeFile or NodeZip):
         iter= self.head
@@ -212,10 +225,12 @@ class DoubleLinkedList:
 
     def viewByType(self, types):
         print("VIEW", types)
+        count=0
         if types=="Folder" or types=="folder":
             iter= self.head
             for i in range(self.size):
                 if type(iter) is NodeFolder:
+                    count+=1
                     print(iter.name)
                 iter= iter.next
         else:
@@ -223,8 +238,11 @@ class DoubleLinkedList:
             for i in range(self.size):
                 if type(iter) is NodeFile:
                     if iter.type == types:
+                        count+=1
                         print(iter.name)
                 iter= iter.next
+        if count==0:
+            print(types, "tidak ditemukan di folder ini!")
 
     def viewOnlyZip(self):
         iter= self.head
@@ -314,7 +332,7 @@ class Tree:
             print(i,end="\\")
 
     def getPathUtil(self,node,search,path):
-        path.append(node.name)     
+        path.append(node.name)
         queue = []
         temp = node.child.head
         while temp is not None:
@@ -333,7 +351,7 @@ class Tree:
                     return path
                 else:
                     hasil = self.getPathUtil(akses,search,path)
-                    if(type(hasil) == list):
+                    if(type(hasil) == []):
                         return hasil
         path.pop(len(path)-1)
         return
@@ -358,7 +376,12 @@ class Tree:
         nodeParent.child.deleteByName(nodeDelete.name)
     
     def unzip(self, zipInput: NodeZip, NodeTujuan: NodeFolder):
-        newFolderName= zipInput.name
+        indexType=0
+        for i in zipInput.name[::-1]:
+            if i == ".":
+                break
+            indexType += 1
+        newFolderName= zipInput.name[0:len(zipInput.name)-indexType-1]
         newFolder= NodeFolder(newFolderName)
         NodeTujuan.child.addWithSort(newFolder)
         iter= zipInput.child.head
@@ -376,26 +399,3 @@ class Tree:
         #     indexNow+=1
         #     nodeAwal= nodeAwal.child.getNode(path[indexNow])
         #     self.getNodeByPath(path, indexNow, nodeAwal)
-# t = Tree()
-# t.root.child.addWithSort(NodeFolder('ayam bakar'))
-# t.root.child.addWithSort(NodeFile('ayam.txt'))
-# t.root.child.addWithSort(NodeFolder('boba tea'))
-# t.root.child.addWithSort(NodeFile('Boba milk tea.txt'))
-# t.root.child.head.child.addWithSort(NodeFile('ayam.txt'))
-# t.root.child.head.child.addWithSort(NodeFolder('Bangsat'))
-# t.root.child.head.child.head.next.child.addWithSort(NodeFolder('Bangsat kau sid'))
-# def print_structure(node:NodeFolder or NodeDrive,lvl = 1):
-#     print('>'+node.name)
-#     temp = node.child.head
-#     if temp != None:
-#         while temp != None:
-#             for i in range(lvl):
-#                 print('    ',end="")
-#             if type(temp) == NodeFile:
-#                 print('-'+temp.name)
-#             else:
-#                 print_structure(temp,lvl+1)
-#             temp = temp.next
-
-# print_structure(t.root)
-# t.printPath(t.root.child.head.child.head)
