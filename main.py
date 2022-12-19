@@ -1,6 +1,18 @@
 from copy import copy
 from proyek import *
 
+def print_structure(node:NodeFolder or NodeDrive,lvl = 1):
+    print('>'+node.name)
+    temp = node.child.head
+    if temp != None:
+        while temp != None:
+            for i in range(lvl):
+                print('    ',end="")
+            if type(temp) == NodeFile:
+                print('-'+temp.name)
+            else:
+                print_structure(temp,lvl+1)
+            temp = temp.next
 
 if __name__ == '__main__':
     currentPath = []
@@ -8,9 +20,6 @@ if __name__ == '__main__':
     tree = Tree(NodeC)
     currentPath.append(NodeC)
     while True:
-        for i in range(len(currentPath)):
-            print(currentPath[i].name, end=" > ")
-
         print()
         print()
         print("===================MENU UTAMA===================")
@@ -33,6 +42,8 @@ if __name__ == '__main__':
         print("17. Move Folder/File")
         print("18. Zip")
         print("19. Unzip")
+        for i in range(len(currentPath)):
+            print(currentPath[i].name, end=" > ")
         user = int(input("Pilihan anda: "))
         if user == 1:
             folderName = input("New Folder Name: ")
@@ -206,6 +217,8 @@ if __name__ == '__main__':
                     currentPath.pop(-1)
                 elif user==0:
                     break
+        elif user == 20:
+            print_structure(Tree.getNodeByPath())
 
 
 

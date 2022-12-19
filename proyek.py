@@ -314,7 +314,7 @@ class Tree:
             print(i,end="\\")
 
     def getPathUtil(self,node,search,path):
-        path.append(node.name)
+        path.append(node.name)     
         queue = []
         temp = node.child.head
         while temp is not None:
@@ -333,7 +333,7 @@ class Tree:
                     return path
                 else:
                     hasil = self.getPathUtil(akses,search,path)
-                    if(type(hasil) == []):
+                    if(type(hasil) == list):
                         return hasil
         path.pop(len(path)-1)
         return
@@ -376,3 +376,26 @@ class Tree:
         #     indexNow+=1
         #     nodeAwal= nodeAwal.child.getNode(path[indexNow])
         #     self.getNodeByPath(path, indexNow, nodeAwal)
+# t = Tree()
+# t.root.child.addWithSort(NodeFolder('ayam bakar'))
+# t.root.child.addWithSort(NodeFile('ayam.txt'))
+# t.root.child.addWithSort(NodeFolder('boba tea'))
+# t.root.child.addWithSort(NodeFile('Boba milk tea.txt'))
+# t.root.child.head.child.addWithSort(NodeFile('ayam.txt'))
+# t.root.child.head.child.addWithSort(NodeFolder('Bangsat'))
+# t.root.child.head.child.head.next.child.addWithSort(NodeFolder('Bangsat kau sid'))
+# def print_structure(node:NodeFolder or NodeDrive,lvl = 1):
+#     print('>'+node.name)
+#     temp = node.child.head
+#     if temp != None:
+#         while temp != None:
+#             for i in range(lvl):
+#                 print('    ',end="")
+#             if type(temp) == NodeFile:
+#                 print('-'+temp.name)
+#             else:
+#                 print_structure(temp,lvl+1)
+#             temp = temp.next
+
+# print_structure(t.root)
+# t.printPath(t.root.child.head.child.head)
