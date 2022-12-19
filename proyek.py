@@ -70,6 +70,14 @@ class DoubleLinkedList:
         self.tail= None
         self.size=0
 
+    def getNode(self, name):
+        iter= self.head
+        for i in range(self.size):
+            if iter.name.lower() == name.lower():
+                return iter
+            iter= iter.next
+        print("Tidak ditemukan")
+        return 0
     def renameThenSort(self, node: NodeFolder or NodeFile or NodeZip, newName):
         iter= self.head
         for i in range(self.size):
@@ -103,6 +111,7 @@ class DoubleLinkedList:
             if iter.name.lower()== node.name.lower():
                 canAdd= False
                 break
+            iter= iter.next
 
         if canAdd:
             if self.size==0:
@@ -217,6 +226,14 @@ class DoubleLinkedList:
                         print(iter.name)
                 iter= iter.next
 
+    def viewOnlyZip(self):
+        iter= self.head
+        for i in range(self.size):
+            if type(iter) is NodeZip:
+                print(iter.name)
+            iter= iter.next
+        print()
+
     def groupBy(self):
         #Folder first
         adaFolder= False
@@ -290,6 +307,7 @@ class Tree:
         node.getDetail()
         print("Path: ", end="")
         self.printPath(node)
+        print()
 
     def printPath(self,node:NodeFolder or NodeFile or NodeZip):
         for i in self.getPath(node):
@@ -340,8 +358,7 @@ class Tree:
         nodeParent.child.deleteByName(nodeDelete.name)
     
     def unzip(self, zipInput: NodeZip, NodeTujuan: NodeFolder):
-        indexType= searchTypeOfFile(zipInput.name)
-        newFolderName= zipInput.name[0:indexType-1]
+        newFolderName= zipInput.name
         newFolder= NodeFolder(newFolderName)
         NodeTujuan.child.addWithSort(newFolder)
         iter= zipInput.child.head
@@ -359,57 +376,3 @@ class Tree:
         #     indexNow+=1
         #     nodeAwal= nodeAwal.child.getNode(path[indexNow])
         #     self.getNodeByPath(path, indexNow, nodeAwal)
-    
-
-
-        
-# if __name__ == '__main__':
-    # ll= DoubleLinkedList()
-    # node1= NodeFile("file1.docs")
-    # ll.addWithSort(node1)
-    # ll.addWithSort(NodeFolder("blabla"))
-    # ll.addWithSort(NodeFile("cicak.pdf"))
-    # ll.addWithSort(NodeFile("cicak.txt"))
-    # ll.addWithSort(NodeFile("blabla.xlsx"))
-    # ll.addWithSort(NodeFolder("babi"))
-    # ll.addWithSort(NodeFolder("Barbar"))
-    # ll.addWithSort(NodeFile("gas.pdf"))
-    # ll.addWithSort(NodeFile("babi.txt"))
-    # ll.addWithSort(NodeFile("zebra.txt"))
-    # ll.addWithSort(NodeZip("ok.zip",listOfChild=[NodeFolder("blabla"), NodeFile("yyy.docs")]))
-
-    # # ll.deleteByName("file1.docs")
-
-    # ll.printAsc()
-    # print()
-    # # ll.printDesc()
-    # # print()
-    # # ll.sortByType()
-    # # print()
-    # ll.viewByType("xlsx")
-
-    # print()
-
-    # ll.groupBy()
-
-# s = [5,4,3]
-# print(s.pop(len(s)-1))
-t = Tree()
-file1= NodeFile("testing.pdf")
-path=["My Computer","Ayam Bakar", "Ayam Bakar"]
-t.root.child.addWithSort(file1)
-t.root.child.addWithSort(NodeFolder("Ayam Bakar"))
-t.root.child.addWithSort(NodeFolder("Ayam rujak"))
-t.root.child.addWithSort(NodeFolder("Ayam geprek"))
-t.root.child.head.child.addWithSort(NodeFolder("Ayam Bakar"))
-t.root.child.head.next.child.addWithSort(NodeFolder("Ayam Bakar"))
-# t.findAll(t.root.child.head,"Ayam")
-testing= t.getNodeByPath(path)
-print(testing)
-# t.getDetail(file1)
-# t= Tree()
-# t.unzip(NodeZip("ok.zip",[NodeFile("wkwkwk.pdf")]))
-# nd= NodeDrive("C:")
-# if nd.status==False:
-#     del(nd)
-# print(nd)
